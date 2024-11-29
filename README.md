@@ -3,9 +3,6 @@
 ESC/POS Printer driver for Node.js
 
 [![npm version](https://badge.fury.io/js/escpos.svg)](https://www.npmjs.com/package/escpos )
-[![Build Status](https://travis-ci.org/song940/node-escpos.svg?branch=master)](https://travis-ci.org/song940/node-escpos)
-
-[![NPM](https://nodei.co/npm/escpos.png?downloads=true&downloadRank=true&stars=true)](https://npmjs.org/escpos )
 
 Packages Available:
 
@@ -57,12 +54,6 @@ device.open(function(error){
 });
 ````
 - See `./examples` for more examples.
-
-----
-
-## Screencast
-
-![img_1031](https://user-images.githubusercontent.com/8033320/29250339-d66ce470-807b-11e7-89ce-9962da88ca18.JPG)
 
 ----
 
