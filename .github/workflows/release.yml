@@ -1,36 +1,36 @@
 on:
-    push:
-        branches:
-            - dev
+  push:
+    branches:
+      - dev
 
 permissions:
-    contents: write
-    pull-requests: write
-    packages: write
+  contents: write
+  pull-requests: write
+  packages: write
 
 name: Release please & Deploy
 
 jobs:
-    release:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: googleapis/release-please-action@v4
-              id: release
-              with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  release-type: node
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
 
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-                  registry-url: "https://registry.npmjs.org"
-              if: ${{ steps.release.outputs.release_created }}
-            - run: npm ci
-              if: ${{ steps.release.outputs.release_created }}
-            - run: npm run build
-              if: ${{ steps.release.outputs.release_created }}
-            - run: npm publish
-              if: ${{ steps.release.outputs.release_created }}
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+        if: ${{ steps.release.outputs.release_created }}
+      - run: npm ci
+        if: ${{ steps.release.outputs.release_created }}
+      - run: npm run build
+        if: ${{ steps.release.outputs.release_created }}
+      - run: npm publish
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
