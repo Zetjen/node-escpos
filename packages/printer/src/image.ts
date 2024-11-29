@@ -1,8 +1,13 @@
-'use strict';
+"use strict";
 import getPixels from "get-pixels";
-import {NdArray} from "ndarray";
+import { NdArray } from "ndarray";
 
-export type ImageMimeType = 'image/png' | 'image/jpg' | 'image/jpeg' | 'image/gif' | 'image/bmp';
+export type ImageMimeType =
+  | "image/png"
+  | "image/jpg"
+  | "image/jpeg"
+  | "image/gif"
+  | "image/bmp";
 
 /**
  * [Image description]
@@ -19,7 +24,9 @@ export default class Image {
 
     for (let i = 0; i < this.pixels.data.length; i += this.size.colors) {
       rgbaData.push(
-        new Array(this.size.colors).fill(0).map((_, b) => this.pixels.data[i + b])
+        new Array(this.size.colors)
+          .fill(0)
+          .map((_, b) => this.pixels.data[i + b]),
       );
     }
 
@@ -30,7 +37,7 @@ export default class Image {
 
   private get size() {
     return {
-      width : this.pixels.shape[0],
+      width: this.pixels.shape[0],
       height: this.pixels.shape[1],
       colors: this.pixels.shape[2],
     };
@@ -51,7 +58,7 @@ export default class Image {
 
     for (y = 0; y < n; y++) {
       // line data
-      const ld: number[] = result[y] = [];
+      const ld: number[] = (result[y] = []);
 
       for (x = 0; x < this.size.width; x++) {
         for (b = 0; b < density; b++) {
@@ -62,7 +69,7 @@ export default class Image {
           l = y * density + b;
           if (l < this.size.height) {
             if (this.data[l * this.size.width + x]) {
-              ld[i] += (0x80 >> (b & 0x7));
+              ld[i] += 0x80 >> (b & 0x7);
             }
           }
         }
@@ -71,9 +78,9 @@ export default class Image {
 
     return {
       data: result,
-      density: density
+      density: density,
     };
-  };
+  }
 
   /**
    * [toRaster description]
@@ -81,7 +88,7 @@ export default class Image {
    */
   toRaster() {
     const result = [];
-    const {width, height} = this.size;
+    const { width, height } = this.size;
 
     // n blocks of lines
     const n = Math.ceil(width / 8);
@@ -98,7 +105,7 @@ export default class Image {
           const c = x * 8 + b;
           if (c < width) {
             if (this.data[y * width + i]) {
-              result[y * n + x] += (0x80 >> (b & 0x7));
+              result[y * n + x] += 0x80 >> (b & 0x7);
             }
           }
         }
@@ -107,7 +114,7 @@ export default class Image {
     return {
       data: result,
       width: n,
-      height: height
+      height: height,
     };
   }
 
@@ -119,10 +126,10 @@ export default class Image {
    */
   static load(url: string, type: ImageMimeType | null = null): Promise<Image> {
     return new Promise((resolve, reject) => {
-      getPixels(url, type ?? '', (error, pixels) => {
+      getPixels(url, type ?? "", (error, pixels) => {
         if (error) reject(error);
         else resolve(new Image(pixels as NdArray<Uint8Array>));
       });
-    })
+    });
   }
-};
+}
